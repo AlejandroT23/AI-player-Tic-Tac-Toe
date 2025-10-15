@@ -222,8 +222,11 @@ void TicTacToeTree::informedSearch(string board, string p_symbol, string ai_symb
     gameBoard->parent = NULL;
     gameBoard->board = new TicTacToeBoard(board);
     
+    boardDim = gameBoard->board->getBoardDimension();
+    
     // MAYBE REMOVE FIRST CHECK
-    while (gameBoard->board->getBoardState() != TicTacToeBoard::INCOMPLETE_GAME) {
+    
+    while (gameBoard->board->getBoardState() == TicTacToeBoard::INCOMPLETE_GAME) {
         if (gameBoard->board->getPlayerTurn() == human_turn) {
             int row;
             int col;
@@ -322,6 +325,9 @@ TicTacToeTree::TicTacToePlay TicTacToeTree::nextMoveHeuristic(string boardStr) {
     tempNode->board = new TicTacToeBoard(boardStr);
     
     MostWinsStats mostWins;
+    mostWins.bestMoveRow = 0;
+    mostWins.bestMoveCol = 0;
+    mostWins.maxWinsSoFar = 0;
     
     createDepthTree(tempNode, tempNode->board->getPlayerTurn(), mostWins);
     
