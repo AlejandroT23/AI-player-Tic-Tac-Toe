@@ -23,6 +23,7 @@ private:
         TicTacToeBoard* board;
         vector < Node* > children;
         Node* parent;
+        int nodeDepth = 0;
         
         ~Node() {
             delete board;
@@ -38,8 +39,15 @@ private:
         TicTacToeBoard::PLAYER_TURN xOrO; //X or O
     };
     
+    struct WinDrawStats {
+        int numXWins;
+        int numOWins;
+        int numDraws;
+    };
+    
     // Stores Dimension size, used throughout the TicTacToeTree.cpp file
     int boardDim;
+    int depthSearch;
     
     // Private Functions --Full Tree--
     void buildFullTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn, int& xWins, int& oWins, int& draws, int& total_g, int& total_b);
@@ -52,6 +60,13 @@ private:
     
     // Private Function --Informed Search--
     void informedSearch(string board, string p_symbol, string ai_symbol);
+    void informedSearchHelper(Node* current, TicTacToeBoard::PLAYER_TURN current_turn, TicTacToeBoard::PLAYER_TURN player_turn);
+    TicTacToeTree::TicTacToePlay nextMoveHeuristic(string boardStr);
+    TicTacToeTree::WinDrawStats countOutcomes(string boardString);
+    void checkSpaces(Node* curr, int& r, int& c, bool isOccupied, string symbol);
+    string getSymbol(TicTacToeBoard::PLAYER_TURN current_turn);
+    void createDepthTree(Node* node);
+    void createDepthTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn);
     
     // Private Functions --Universal Helpers--
     void createChild(Node* &currentNode, TicTacToeBoard::PLAYER_TURN p_turn, int& totalBoards);

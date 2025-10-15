@@ -202,6 +202,90 @@ void TicTacToeTree::printWinPath(deque < Node* >& path, int boards, string searc
     cout << endl;
 }
 //---------------------------------------------
+// FUNCTIONS FOR AI AGENT GAME
+//---------------------------------------------
+void TicTacToeTree::playGameAsO(string boardStr) {
+    informedSearch(boardStr, "X", "O");
+}
+//--
+void TicTacToeTree::playGameAsX(string boardStr) {
+    informedSearch(boardStr, "O", "X");
+}
+//--
+void TicTacToeTree::informedSearch(string board, string p_symbol, string ai_symbol) {
+    
+     
+    
+}
+//--
+void TicTacToeTree::informedSearchHelper(Node* current, TicTacToeBoard::PLAYER_TURN current_turn, TicTacToeBoard::PLAYER_TURN p_turn) {
+    TicTacToeBoard::BOARD_STATE currState = current->board->getBoardState();
+    
+    if (currState != TicTacToeBoard::INCOMPLETE_GAME) {
+        // print win statement
+    } else {
+        if (current_turn == p_turn) {
+            // players input
+            int row;
+            int col;
+            
+            string sym = getSymbol(current_turn);
+            
+            checkSpaces(current, row, col, false, sym);
+            cout << "Playing " << sym << "at row: " << row << " column: " << col;
+            
+            if (sym == "X") {
+                current->board->setSquare(row, col, TicTacToeBoard::X);
+            } else {
+                current->board->setSquare(row, col, TicTacToeBoard::O);
+            }
+            
+            current->board->printBoard();
+        } else {
+            
+        }
+    }
+}
+//--
+void TicTacToeTree::createDepthTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN current_turn) {
+    
+}
+//--
+void TicTacToeTree::checkSpaces(Node* curr, int& r, int& c, bool isOccupied, string symbol) {
+    // how to get symbol
+    while (!isOccupied) {
+        cout << "Enter the row of " << symbol << "'s next move: ";
+        cin >> r;
+        
+        while(r > 2 || r < 0) {
+            cout << "OUT OF BOUNDS, SELECT NUM 0-2";
+        }
+        
+        cout << "Enter the column of " << symbol << "'s next move: ";
+        cin >> c;
+        
+        while(c > 2 || c < 0)
+        {
+            cout << "OUT OF BOUNDS< SELECT NUM 0-2";
+        }
+        
+        TicTacToeBoard::SQUARE_OCCUPANT current_square = curr->board->getSquare(r, c);
+        
+        if (current_square == TicTacToeBoard::EMPTY) {
+            isOccupied = true;
+        }
+    }
+}
+//--
+string TicTacToeTree::getSymbol(TicTacToeBoard::PLAYER_TURN p) {
+    if (p == TicTacToeBoard::X_TURN) {
+        return "X";
+    } else {
+        return "O";
+    }
+}
+//--
+//---------------------------------------------
 // DELETE THE NODES ONCE YOU FINISH THE PROGRAM
 //---------------------------------------------
 void TicTacToeTree::deleteNodes(Node* node) {
