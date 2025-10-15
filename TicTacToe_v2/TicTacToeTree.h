@@ -11,6 +11,7 @@ class TicTacToeTree
 {
 public:
     TicTacToeTree();
+    TicTacToeTree(int numDepth);
     void buildFullTree();
     void breadthFirstSearchForOutcome(string boardSring, TicTacToeBoard::BOARD_STATE requestedState);
     void depthFirstSearchForOutcome(string boardSring, TicTacToeBoard::BOARD_STATE requestedState);
@@ -75,8 +76,8 @@ private:
     TicTacToeTree::WinDrawStats countOutcomes(string boardString);
     void checkSpaces(Node* curr, int& r, int& c, bool isOccupied, string symbol);
     string getSymbol(TicTacToeBoard::PLAYER_TURN current_turn);
-    void createDepthTree(Node* node, TicTacToeBoard::PLAYER_TURN p_turn);
-    void createDepthTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn);
+    void createDepthTree(Node* node, TicTacToeBoard::PLAYER_TURN p_turn, MostWinsStats& mws);
+    void createDepthTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn, TicTacToeTree::WinDrawStats wds);
     
     bool checkWin(Node* node);
     

@@ -6,39 +6,46 @@ using namespace std;
 
 int main()
 {
-    TicTacToeTree tree;
-    tree.buildFullTree();
+//    TicTacToeTree tree;
+//    tree.buildFullTree();
     
     //Initial Test
-    string boardStr = "X--O-----";
-    tree.breadthFirstSearchForOutcome(boardStr, TicTacToeBoard::BOARD_STATE::X_WIN);
-    tree.depthFirstSearchForOutcome(boardStr, TicTacToeBoard::BOARD_STATE::X_WIN);
+//    string boardStr = "X--O-----";
+//    tree.breadthFirstSearchForOutcome(boardStr, TicTacToeBoard::BOARD_STATE::X_WIN);
+//    tree.depthFirstSearchForOutcome(boardStr, TicTacToeBoard::BOARD_STATE::X_WIN);
+//    
+//    tree.breadthFirstSearchForOutcome(boardStr, TicTacToeBoard::BOARD_STATE::O_WIN);
+//    tree.depthFirstSearchForOutcome(boardStr, TicTacToeBoard::BOARD_STATE::O_WIN);
+//    
+//    tree.depthFirstSearchForOutcome(boardStr, TicTacToeBoard::BOARD_STATE::DRAW);
+//    
+//    //Personal Test
+//    string boardStr2 = "X--OX--O-";
+//    tree.breadthFirstSearchForOutcome(boardStr2, TicTacToeBoard::BOARD_STATE::X_WIN);
+//    tree.depthFirstSearchForOutcome(boardStr2, TicTacToeBoard::BOARD_STATE::X_WIN);
+//
+//    tree.breadthFirstSearchForOutcome(boardStr2, TicTacToeBoard::BOARD_STATE::O_WIN);
+//    tree.depthFirstSearchForOutcome(boardStr2, TicTacToeBoard::BOARD_STATE::O_WIN);
+//
+//    tree.depthFirstSearchForOutcome(boardStr2, TicTacToeBoard::BOARD_STATE::DRAW);
+//
+//    //4x4 Test
+//    string boardStr3 = "X--OX--O----O--X";
+//    tree.breadthFirstSearchForOutcome(boardStr3, TicTacToeBoard::BOARD_STATE::X_WIN);
+//    tree.depthFirstSearchForOutcome(boardStr3, TicTacToeBoard::BOARD_STATE::X_WIN);
+//
+//    tree.breadthFirstSearchForOutcome(boardStr3, TicTacToeBoard::BOARD_STATE::O_WIN);
+//    tree.depthFirstSearchForOutcome(boardStr3, TicTacToeBoard::BOARD_STATE::O_WIN);
+//
+//    tree.depthFirstSearchForOutcome(boardStr3, TicTacToeBoard::BOARD_STATE::DRAW);
     
-    tree.breadthFirstSearchForOutcome(boardStr, TicTacToeBoard::BOARD_STATE::O_WIN);
-    tree.depthFirstSearchForOutcome(boardStr, TicTacToeBoard::BOARD_STATE::O_WIN);
-    
-    tree.depthFirstSearchForOutcome(boardStr, TicTacToeBoard::BOARD_STATE::DRAW);
-    
-    //Personal Test
-    string boardStr2 = "X--OX--O-";
-    tree.breadthFirstSearchForOutcome(boardStr2, TicTacToeBoard::BOARD_STATE::X_WIN);
-    tree.depthFirstSearchForOutcome(boardStr2, TicTacToeBoard::BOARD_STATE::X_WIN);
+    string boardString0 = "---------";
 
-    tree.breadthFirstSearchForOutcome(boardStr2, TicTacToeBoard::BOARD_STATE::O_WIN);
-    tree.depthFirstSearchForOutcome(boardStr2, TicTacToeBoard::BOARD_STATE::O_WIN);
+    //willing to look 9 levels deep when choosing a move
+    TicTacToeTree tree(9);
 
-    tree.depthFirstSearchForOutcome(boardStr2, TicTacToeBoard::BOARD_STATE::DRAW);
-
-    //4x4 Test
-    string boardStr3 = "X--OX--O----O--X";
-    tree.breadthFirstSearchForOutcome(boardStr3, TicTacToeBoard::BOARD_STATE::X_WIN);
-    tree.depthFirstSearchForOutcome(boardStr3, TicTacToeBoard::BOARD_STATE::X_WIN);
-
-    tree.breadthFirstSearchForOutcome(boardStr3, TicTacToeBoard::BOARD_STATE::O_WIN);
-    tree.depthFirstSearchForOutcome(boardStr3, TicTacToeBoard::BOARD_STATE::O_WIN);
-
-    tree.depthFirstSearchForOutcome(boardStr3, TicTacToeBoard::BOARD_STATE::DRAW);
-    
+    //agent will play as X
+    tree.playGameAsX(boardString0);
     
     return 0;
 }
