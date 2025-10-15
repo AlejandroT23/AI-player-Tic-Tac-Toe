@@ -25,6 +25,10 @@ private:
         Node* parent;
         int nodeDepth = 0;
         
+        // This is the place where we show what is played
+        int row_play;
+        int col_play;
+        
         ~Node() {
             delete board;
             for (Node* child : children) {
@@ -45,6 +49,12 @@ private:
         int numDraws;
     };
     
+    struct MostWinsStats {
+        int bestMoveRow;
+        int bestMoveCol;
+        int maxWinsSoFar;
+    };
+    
     // Stores Dimension size, used throughout the TicTacToeTree.cpp file
     int boardDim;
     int depthSearch;
@@ -59,14 +69,16 @@ private:
     void printWinPath(deque < Node* >& path, int boards, string searchType, string winType);
     
     // Private Function --Informed Search--
-    void informedSearch(string board, string p_symbol, string ai_symbol);
+    void informedSearch(string board, string p_symbol, string ai_symbol, TicTacToeBoard::PLAYER_TURN p_turn);
     void informedSearchHelper(Node* current, TicTacToeBoard::PLAYER_TURN current_turn, TicTacToeBoard::PLAYER_TURN player_turn);
     TicTacToeTree::TicTacToePlay nextMoveHeuristic(string boardStr);
     TicTacToeTree::WinDrawStats countOutcomes(string boardString);
     void checkSpaces(Node* curr, int& r, int& c, bool isOccupied, string symbol);
     string getSymbol(TicTacToeBoard::PLAYER_TURN current_turn);
-    void createDepthTree(Node* node);
+    void createDepthTree(Node* node, TicTacToeBoard::PLAYER_TURN p_turn);
     void createDepthTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn);
+    
+    bool checkWin(Node* node);
     
     // Private Functions --Universal Helpers--
     void createChild(Node* &currentNode, TicTacToeBoard::PLAYER_TURN p_turn, int& totalBoards);

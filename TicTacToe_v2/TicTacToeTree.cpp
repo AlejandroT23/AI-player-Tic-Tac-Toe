@@ -205,17 +205,108 @@ void TicTacToeTree::printWinPath(deque < Node* >& path, int boards, string searc
 // FUNCTIONS FOR AI AGENT GAME
 //---------------------------------------------
 void TicTacToeTree::playGameAsO(string boardStr) {
-    informedSearch(boardStr, "X", "O");
+    informedSearch(boardStr, "X", "O", TicTacToeBoard::X_TURN);
 }
 //--
 void TicTacToeTree::playGameAsX(string boardStr) {
-    informedSearch(boardStr, "O", "X");
+    informedSearch(boardStr, "O", "X", TicTacToeBoard::O_TURN);
 }
 //--
-void TicTacToeTree::informedSearch(string board, string p_symbol, string ai_symbol) {
+void TicTacToeTree::informedSearch(string board, string p_symbol, string ai_symbol, TicTacToeBoard::PLAYER_TURN human_turn) {
     
-     
+    Node* gameBoard = new Node;
+    gameBoard->parent = NULL;
+    gameBoard->board = new TicTacToeBoard(board);
     
+    // MAYBE REMOVE FIRST CHECK
+    while (gameBoard->board->getBoardState() != TicTacToeBoard::INCOMPLETE_GAME) {
+        if (gameBoard->board->getPlayerTurn() == human_turn) {
+            int row;
+            int col;
+            
+            checkSpaces(gameBoard, row, col, false, p_symbol);
+            cout << "Playing " << p_symbol << " at row: " << row << " column: " << col;
+            
+            if (p_symbol == "X") {
+                gameBoard->board->setSquare(row, col, TicTacToeBoard::X);
+            } else {
+                gameBoard->board->setSquare(row, col, TicTacToeBoard::O);
+            }
+            
+            gameBoard->board->printBoard();
+        } else {
+            
+        }
+    }
+}
+//--
+TicTacToeTree::TicTacToePlay TicTacToeTree::nextMoveHeuristic(string boardStr) {
+    TicTacToePlay ai_move;
+    
+    // IF WIN CLAUSE
+    for (int r = 0; r < boardDim; r++) {
+        for (int c = 0; c < boardDim; c++) {
+            Node* tempNode = new Node;
+            tempNode->board = new TicTacToeBoard(boardStr);
+            
+            if (tempNode->board->getSquare(r, c) == TicTacToeBoard::EMPTY) {
+                TicTacToeBoard::PLAYER_TURN ai_turn = tempNode->board->getPlayerTurn();
+                
+                if (ai_turn == TicTacToeBoard::X_TURN) {
+                    tempNode->board->setSquare(r, c, TicTacToeBoard::X);
+                } else {
+                    tempNode->board->setSquare(r, c, TicTacToeBoard::O);
+                }
+                
+                if (tempNode->board->getBoardState() == TicTacToeBoard::X_WIN || tempNode->board->getBoardState() == TicTacToeBoard::O_WIN) {
+                    ai_move.row = r;
+                    ai_move.col = c;
+                    ai_move.xOrO = ai_turn;
+                    
+                    delete tempNode;
+                    return ai_move;
+                }
+                
+            } else {
+                delete tempNode;
+            }
+        }
+    }
+    
+    // IF BLOCK CLAUSE
+    for (int r = 0; r < boardDim; r++) {
+        for (int c = 0; c < boardDim; c++) {
+            Node* tempNode = new Node;
+            tempNode->board = new TicTacToeBoard(boardStr);
+            
+            if (tempNode->board->getSquare(r, c) == TicTacToeBoard::EMPTY) {
+                TicTacToeBoard::PLAYER_TURN ai_turn = tempNode->board->getPlayerTurn();
+                
+                // checks for win
+                if (ai_turn == TicTacToeBoard::X_TURN) {
+                    tempNode->board->setSquare(r, c, TicTacToeBoard::O);
+                } else {
+                    tempNode->board->setSquare(r, c, TicTacToeBoard::X);
+                }
+                
+                if (tempNode->board->getBoardState() == TicTacToeBoard::X_WIN || tempNode->board->getBoardState() == TicTacToeBoard::O_WIN) {
+                    ai_move.row = r;
+                    ai_move.col = c;
+                    ai_move.xOrO = ai_turn;
+                    
+                    delete tempNode;
+                    return ai_move;
+                }
+                
+            } else {
+                delete tempNode;
+            }
+        }
+    }
+    
+    
+ 
+    return ai_move;
 }
 //--
 void TicTacToeTree::informedSearchHelper(Node* current, TicTacToeBoard::PLAYER_TURN current_turn, TicTacToeBoard::PLAYER_TURN p_turn) {
@@ -234,6 +325,10 @@ void TicTacToeTree::informedSearchHelper(Node* current, TicTacToeBoard::PLAYER_T
             checkSpaces(current, row, col, false, sym);
             cout << "Playing " << sym << "at row: " << row << " column: " << col;
             
+//            Node* child = new Node;
+//            child->parent = current;
+//            child->board = new TicTacToeBoard(current->board->getBoardString());
+            
             if (sym == "X") {
                 current->board->setSquare(row, col, TicTacToeBoard::X);
             } else {
@@ -241,14 +336,49 @@ void TicTacToeTree::informedSearchHelper(Node* current, TicTacToeBoard::PLAYER_T
             }
             
             current->board->printBoard();
+            
+//            current->children.push_back(child);
+//            current = child;
+            
+            currState = current->board->getBoardState();
+            
         } else {
+            deque < Node* > priorityQueue;
+            deque < Node* > queue;
+            
+            Node* tempRoot = new Node(*current);
             
         }
     }
 }
 //--
-void TicTacToeTree::createDepthTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN current_turn) {
+void TicTacToeTree::createDepthTree(Node* node, TicTacToeBoard::PLAYER_TURN current_turn) {
     
+}
+//--
+void TicTacToeTree::createDepthTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN current_turn) {
+    TicTacToeBoard::BOARD_STATE currBoard = node->board->getBoardState();
+    
+    // If the state is finished, we increase stat based on the result of the final game
+    if (currBoard != TicTacToeBoard::INCOMPLETE_GAME) {
+//        if (currBoard == TicTacToeBoard::X_WIN) {
+//            xWins++;
+//        } else if (currBoard == TicTacToeBoard::O_WIN) {
+//            oWins++;
+//        } else if (currBoard == TicTacToeBoard::DRAW) {
+//            draws++;
+//        }
+        
+        // Since the game is over, we increase the amount of games by one
+    } else {
+        // To create the children of the current node, we pass it through a function that takes the node, whose turn it is, and the current total amount of boards
+        createChild(currentNode, p_turn, totalBoards);
+        
+        // Once we get the amount of boards, we iterate through the children vector of the current node to create more branches
+        for (size_t k = 0; k < currentNode->children.size(); k++) {
+            buildFullTreeHelper(currentNode->children[k], currentNode->children[k]->board->getPlayerTurn(), xWins, oWins, draws, totalGames, totalBoards);
+        }
+    }
 }
 //--
 void TicTacToeTree::checkSpaces(Node* curr, int& r, int& c, bool isOccupied, string symbol) {
