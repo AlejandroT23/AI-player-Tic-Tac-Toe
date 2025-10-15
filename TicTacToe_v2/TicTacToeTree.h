@@ -14,9 +14,12 @@ public:
     void buildFullTree();
     void breadthFirstSearchForOutcome(string boardSring, TicTacToeBoard::BOARD_STATE requestedState);
     void depthFirstSearchForOutcome(string boardSring, TicTacToeBoard::BOARD_STATE requestedState);
+    
+    void playGameAsX(string boardString);
+    void playGameAsO(string boardString);
+    
 private:
-    struct Node
-    {
+    struct Node {
         TicTacToeBoard* board;
         vector < Node* > children;
         Node* parent;
@@ -27,6 +30,12 @@ private:
                 delete child;
             }
         }
+    };
+    
+    struct TicTacToePlay {
+        int row; //0 - (board dim - 1)
+        int col; //0 - (board dim - 1)
+        TicTacToeBoard::PLAYER_TURN xOrO; //X or O
     };
     
     // Stores Dimension size, used throughout the TicTacToeTree.cpp file
@@ -40,6 +49,9 @@ private:
     string getTypeGame(TicTacToeBoard::BOARD_STATE state);
     void getWinPath(Node* currentNode, deque < Node* >& nodes);
     void printWinPath(deque < Node* >& path, int boards, string searchType, string winType);
+    
+    // Private Function --Informed Search--
+    void informedSearch(string board, string p_symbol, string ai_symbol);
     
     // Private Functions --Universal Helpers--
     void createChild(Node* &currentNode, TicTacToeBoard::PLAYER_TURN p_turn, int& totalBoards);
