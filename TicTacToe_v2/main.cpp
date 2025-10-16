@@ -42,7 +42,7 @@ int main()
     string boardString0 = "---------";
 
     //willing to look 9 levels deep when choosing a move
-    TicTacToeTree tree(9);
+    TicTacToeTree tree(6);
 
     //agent will play as X
     tree.playGameAsO(boardString0);

@@ -51,8 +51,8 @@ private:
     };
     
     struct MostWinsStats {
-        int bestMoveRow = 0;
-        int bestMoveCol = 0;
+        int bestMoveRow = -1;
+        int bestMoveCol = -1;
         int maxWinsSoFar = 0;
     };
     

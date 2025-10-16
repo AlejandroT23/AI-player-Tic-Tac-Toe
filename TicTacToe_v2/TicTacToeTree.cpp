@@ -355,6 +355,8 @@ TicTacToeTree::TicTacToePlay TicTacToeTree::nextMoveHeuristic(string boardStr) {
 void TicTacToeTree::createDepthTree(Node* node, TicTacToeBoard::PLAYER_TURN current_turn, MostWinsStats& mws) {
     node->nodeDepth = 0;
     
+    bool firstTime = true;
+    
     for (int r = 0; r < boardDim; r++) {
         for (int c = 0; c < boardDim; c++) {
             if (node->board->getSquare(r, c) == TicTacToeBoard::EMPTY) {
@@ -374,14 +376,27 @@ void TicTacToeTree::createDepthTree(Node* node, TicTacToeBoard::PLAYER_TURN curr
                 createDepthTreeHelper(child, child->board->getPlayerTurn(), stats);
                 node->children.push_back(child);
                 
-                if (current_turn == TicTacToeBoard::X_TURN && stats.numXWins > mws.maxWinsSoFar) {
+                if (firstTime == true) {
                     mws.bestMoveRow = r;
                     mws.bestMoveCol = c;
-                    mws.maxWinsSoFar = stats.numXWins;
-                } else if (current_turn == TicTacToeBoard::O_TURN && stats.numOWins > mws.maxWinsSoFar) {
-                    mws.bestMoveRow = r;
-                    mws.bestMoveCol = c;
-                    mws.maxWinsSoFar = stats.numOWins;
+                    
+                    if (stats.numXWins > stats.numOWins) {
+                        mws.maxWinsSoFar = stats.numXWins;
+                    } else {
+                        mws.maxWinsSoFar = stats.numOWins;
+                    }
+                    
+                    firstTime = false;
+                } else {
+                    if (current_turn == TicTacToeBoard::X_TURN && stats.numXWins > mws.maxWinsSoFar) {
+                        mws.bestMoveRow = r;
+                        mws.bestMoveCol = c;
+                        mws.maxWinsSoFar = stats.numXWins;
+                    } else if (current_turn == TicTacToeBoard::O_TURN && stats.numOWins > mws.maxWinsSoFar) {
+                        mws.bestMoveRow = r;
+                        mws.bestMoveCol = c;
+                        mws.maxWinsSoFar = stats.numOWins;
+                    }
                 }
                 
                 cout << "Row: " << r << " Col: " << c << " X wins: " << stats.numXWins << " O wins: " << stats.numOWins << " Draws: " << stats.numDraws << endl;
@@ -438,7 +453,7 @@ void TicTacToeTree::checkSpaces(Node* curr, int& r, int& c, bool isOccupied, str
         cout << "Enter the row of " << symbol << "'s next move: ";
         cin >> r;
         
-        while(r > 2 || r < 0) {
+        while(r > boardDim || r < 0) {
             cout << "OUT OF BOUNDS, SELECT NUM 0-2";
             cin >> r;
         }
@@ -446,7 +461,7 @@ void TicTacToeTree::checkSpaces(Node* curr, int& r, int& c, bool isOccupied, str
         cout << "Enter the column of " << symbol << "'s next move: ";
         cin >> c;
         
-        while(c > 2 || c < 0)
+        while(c > boardDim || c < 0)
         {
             cout << "OUT OF BOUNDS< SELECT NUM 0-2";
             cin >> c;
