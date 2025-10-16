@@ -45,7 +45,7 @@ int main()
     TicTacToeTree tree(9);
 
     //agent will play as X
-    tree.playGameAsX(boardString0);
+    tree.playGameAsO(boardString0);
     
     return 0;
 }

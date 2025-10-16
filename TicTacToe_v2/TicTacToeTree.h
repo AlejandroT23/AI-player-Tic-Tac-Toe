@@ -45,15 +45,15 @@ private:
     };
     
     struct WinDrawStats {
-        int numXWins;
-        int numOWins;
-        int numDraws;
+        int numXWins = 0;
+        int numOWins = 0;
+        int numDraws = 0;
     };
     
     struct MostWinsStats {
-        int bestMoveRow;
-        int bestMoveCol;
-        int maxWinsSoFar;
+        int bestMoveRow = 0;
+        int bestMoveCol = 0;
+        int maxWinsSoFar = 0;
     };
     
     // Stores Dimension size, used throughout the TicTacToeTree.cpp file
@@ -77,7 +77,7 @@ private:
     void checkSpaces(Node* curr, int& r, int& c, bool isOccupied, string symbol);
     string getSymbol(TicTacToeBoard::PLAYER_TURN current_turn);
     void createDepthTree(Node* node, TicTacToeBoard::PLAYER_TURN p_turn, MostWinsStats& mws);
-    void createDepthTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn, TicTacToeTree::WinDrawStats wds);
+    void createDepthTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn, TicTacToeTree::WinDrawStats& wds);
     
     bool checkWin(Node* node);
     

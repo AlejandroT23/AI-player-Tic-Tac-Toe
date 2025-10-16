@@ -218,13 +218,16 @@ void TicTacToeTree::playGameAsX(string boardStr) {
 //--
 void TicTacToeTree::informedSearch(string board, string p_symbol, string ai_symbol, TicTacToeBoard::PLAYER_TURN human_turn) {
     
+    cout << "The AI Agent will be playing " << ai_symbol << endl;
+    
+    
     Node* gameBoard = new Node;
     gameBoard->parent = NULL;
     gameBoard->board = new TicTacToeBoard(board);
-    
     boardDim = gameBoard->board->getBoardDimension();
     
-    // MAYBE REMOVE FIRST CHECK
+    gameBoard->board->printBoard();
+    cout << endl;
     
     while (gameBoard->board->getBoardState() == TicTacToeBoard::INCOMPLETE_GAME) {
         if (gameBoard->board->getPlayerTurn() == human_turn) {
@@ -232,7 +235,8 @@ void TicTacToeTree::informedSearch(string board, string p_symbol, string ai_symb
             int col;
             
             checkSpaces(gameBoard, row, col, false, p_symbol);
-            cout << "Playing " << p_symbol << " at row: " << row << " column: " << col;
+            cout << "Playing " << p_symbol << " at row: " << row << " column: " << col << endl;
+            cout << endl;
             
             if (p_symbol == "X") {
                 gameBoard->board->setSquare(row, col, TicTacToeBoard::X);
@@ -243,7 +247,8 @@ void TicTacToeTree::informedSearch(string board, string p_symbol, string ai_symb
             gameBoard->board->printBoard();
         } else {
             TicTacToePlay nextAI_move = nextMoveHeuristic(gameBoard->board->getBoardString());
-            cout << "Playing " << ai_symbol << "at row: " << nextAI_move.row << " column: " << nextAI_move.col << endl;
+            cout << "Playing " << ai_symbol << " at row: " << nextAI_move.row << " column: " << nextAI_move.col << endl;
+            cout << endl;
             
             if (ai_symbol == "X") {
                 gameBoard->board->setSquare(nextAI_move.row, nextAI_move.col, TicTacToeBoard::X);
@@ -360,7 +365,7 @@ void TicTacToeTree::createDepthTree(Node* node, TicTacToeBoard::PLAYER_TURN curr
                     child->board->setSquare(r, c, TicTacToeBoard::O);
                 }
                 
-                child->nodeDepth++;
+                child->nodeDepth = node->nodeDepth + 1;
                 createDepthTreeHelper(child, child->board->getPlayerTurn(), stats);
                 node->children.push_back(child);
                 
@@ -368,7 +373,7 @@ void TicTacToeTree::createDepthTree(Node* node, TicTacToeBoard::PLAYER_TURN curr
                     mws.bestMoveRow = r;
                     mws.bestMoveCol = c;
                     mws.maxWinsSoFar = stats.numXWins;
-                } else if (current_turn == TicTacToeBoard::X_TURN && stats.numXWins > mws.maxWinsSoFar) {
+                } else if (current_turn == TicTacToeBoard::O_TURN && stats.numOWins > mws.maxWinsSoFar) {
                     mws.bestMoveRow = r;
                     mws.bestMoveCol = c;
                     mws.maxWinsSoFar = stats.numOWins;
@@ -380,7 +385,7 @@ void TicTacToeTree::createDepthTree(Node* node, TicTacToeBoard::PLAYER_TURN curr
     }
 }
 //--
-void TicTacToeTree::createDepthTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN current_turn, TicTacToeTree::WinDrawStats wds) {
+void TicTacToeTree::createDepthTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN current_turn, TicTacToeTree::WinDrawStats& wds) {
     TicTacToeBoard::BOARD_STATE currState = node->board->getBoardState();
     
     
@@ -412,7 +417,9 @@ void TicTacToeTree::createDepthTreeHelper(Node* node, TicTacToeBoard::PLAYER_TUR
                         
                         // Pushes child node into the children vector of the current node and increases the total number of boards
                         node->children.push_back(child);
-                        node->nodeDepth++;
+                        child->nodeDepth = node->nodeDepth + 1;
+                        
+                        createDepthTreeHelper(child, child->board->getPlayerTurn(), wds);
                     }
                 }
             }
@@ -428,6 +435,7 @@ void TicTacToeTree::checkSpaces(Node* curr, int& r, int& c, bool isOccupied, str
         
         while(r > 2 || r < 0) {
             cout << "OUT OF BOUNDS, SELECT NUM 0-2";
+            cin >> r;
         }
         
         cout << "Enter the column of " << symbol << "'s next move: ";
@@ -436,6 +444,7 @@ void TicTacToeTree::checkSpaces(Node* curr, int& r, int& c, bool isOccupied, str
         while(c > 2 || c < 0)
         {
             cout << "OUT OF BOUNDS< SELECT NUM 0-2";
+            cin >> c;
         }
         
         TicTacToeBoard::SQUARE_OCCUPANT current_square = curr->board->getSquare(r, c);
