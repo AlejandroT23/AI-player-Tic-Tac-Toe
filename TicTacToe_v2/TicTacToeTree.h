@@ -79,7 +79,7 @@ private:
     void createDepthTree(Node* node, TicTacToeBoard::PLAYER_TURN p_turn, MostWinsStats& mws);
     void createDepthTreeHelper(Node* node, TicTacToeBoard::PLAYER_TURN p_turn, TicTacToeTree::WinDrawStats& wds);
     
-    bool checkWin(Node* node);
+    void printWin(Node* finalBoard);
     
     // Private Functions --Universal Helpers--
     void createChild(Node* &currentNode, TicTacToeBoard::PLAYER_TURN p_turn, int& totalBoards);

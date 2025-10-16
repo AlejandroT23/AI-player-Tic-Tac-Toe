@@ -245,6 +245,8 @@ void TicTacToeTree::informedSearch(string board, string p_symbol, string ai_symb
             }
             
             gameBoard->board->printBoard();
+            cout << endl;
+            
         } else {
             TicTacToePlay nextAI_move = nextMoveHeuristic(gameBoard->board->getBoardString());
             cout << "Playing " << ai_symbol << " at row: " << nextAI_move.row << " column: " << nextAI_move.col << endl;
@@ -257,8 +259,11 @@ void TicTacToeTree::informedSearch(string board, string p_symbol, string ai_symb
             }
             
             gameBoard->board->printBoard();
+            cout << endl;
         }
     }
+    
+    printWin(gameBoard);
 }
 //--
 TicTacToeTree::TicTacToePlay TicTacToeTree::nextMoveHeuristic(string boardStr) {
@@ -462,6 +467,19 @@ string TicTacToeTree::getSymbol(TicTacToeBoard::PLAYER_TURN p) {
         return "O";
     }
 }
+//--
+void TicTacToeTree::printWin(Node* b) {
+    if (b->board->getBoardState() == TicTacToeBoard::X_WIN) {
+        cout << "** X wins! **" << endl;
+    } else if (b->board->getBoardState() == TicTacToeBoard::O_WIN) {
+        cout << "** O wins! **" << endl;
+    } else {
+        cout << "** Draw! **" << endl;
+    }
+    
+    cout << endl;
+}
+
 //--
 //---------------------------------------------
 // DELETE THE NODES ONCE YOU FINISH THE PROGRAM
